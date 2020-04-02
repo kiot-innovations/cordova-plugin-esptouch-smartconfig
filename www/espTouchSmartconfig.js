@@ -1,15 +1,12 @@
-var exec = require('cordova/exec'),
-cordova = require('cordova');
-
 module.exports = {
 
-	start:function(apSsid,apBssid,apPassword,broadcast,taskResultCountStr,encKey, successCallback, errorCallback){
-		exec(successCallback, errorCallback, "espTouchSmartconfig", "startConfig", [apSsid,apBssid,apPassword,broadcast, taskResultCountStr, encKey]);
+	start:function(ssid,bssid,pass,broadcast,maxDevices,encKey, successCallback, errorCallback){
+		cordova.exec(successCallback, errorCallback, "espTouchSmartconfig", "startConfig", [ssid,bssid,pass,broadcast, maxDevices, encKey]);
 	},
 	stop:function(successCallback, errorCallback){
-		exec(successCallback, errorCallback, "espTouchSmartconfig", "stopConfig", []);
+		cordova.exec(successCallback, errorCallback, "espTouchSmartconfig", "stopConfig", []);
     },
     requestLocationPermission: function(successCallback, errorCallback){
-        exec(successCallback, errorCallback, "espTouchSmartconfig", "requestLocationPermission", []);
+        cordova.exec(successCallback, errorCallback, "espTouchSmartconfig", "requestLocationPermission", []);
     }
 }
