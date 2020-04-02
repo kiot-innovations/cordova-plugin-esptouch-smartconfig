@@ -20,8 +20,9 @@ declare var espTouchSmartConfig: any;
 
 # Usage
 
+### To start smart config
 ```
-To start smart config
+
 /**
  * 
  * @param {string} ssid  SSID of the wifi network which you want to send too device
@@ -53,24 +54,27 @@ espTouchSmartConfig.start(ssid,password,bssid,broadcast,maxDevices,encKey, (res)
 // maxDevices: It will not guarentee the maxium number of devices picking up the config. But it'll stop as soon as confirmation is received from these many devices. 
 // encKey: Keep it's value "" (Empty String) if you are not using encryption 
 // This function will automatically check permission for location and ask for permission if not granted. 
+```
 
-To stop smart config
+### To stop smart config
+
+```
 espTouchSmartConfig.stop((res)=>{
 	// Successcallback
 }, (err)=>{
 	// Errorcallback
 });
+```
 
-To request location permission
+### Request Permissions
+
+```
 espTouchSmartConfig.requestLocationPermission(()=>{
 	// Permission granted. 
 }, (err)=>{
 	// Boo!! Permission not granted.
 	console.log(err); 
 });
-
-
-
 ```
 
 
