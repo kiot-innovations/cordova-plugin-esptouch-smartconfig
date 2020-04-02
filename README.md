@@ -81,5 +81,8 @@ espTouchSmartConfig.requestLocationPermission(()=>{
 # Android Permissions
 This plugin requires permission for location access in Android. 
 
+# Use with Wifiwizard
+Todo
+
 # Todo
 - [ ] Ios has not been tested yet. 
