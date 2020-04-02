@@ -1,77 +1,72 @@
-# cordova-plugin-smartconfig
-
-A cordova plugin for Expressif Esptouch protocol which is used to smartconfig esp8266 & ESP32.
-It's a modified version of original code at https://github.com/xumingxin7398/cordovaEsptouch
+# cordova-plugin-esptouch-smartconfig
+A cordova plugin for sending wifi configurations to esp8266 and esp32 based devices using [Espressif Esptouch protocol](https://www.espressif.com/en/products/software/esp-touch/overview).
 
 # Install
 
-cordova plugin add https://github.com/IOCare/cordova-plugin-smartconfig.git
+`cordova plugin add https://github.com/kiot-innovations/cordova-plugin-esptouch-smartconfig`
+
+### Use in Ionic project
+Ionic (typescript) project will throw error because espTouchSmartConfig is not defined. To prevent this declare espTouchSmartConfig in app.ts or any other module where you are using it.
+```
+// In app.component.ts
+declare var espTouchSmartConfig: any;
+
+@Component({
+	...
+})
+...
+
+``` 
 
 # Usage
-1. espSmartconfig.startConfig 
 
 ```
-//@apSsid,ssid of the wifi,for example: "wifiName"
-//@apBssid,bssid of the wifi,for example "b2:05:2f:92" 
-//@apPassword,password of the wifi,for example: "wifiPassword" 
-//@isSsidHiddenStr,default "NO"
-//@taskResultCountStr,the count of device you want to config,for example:1
+To start smart config
+/**
+ * 
+ * @param {string} ssid  SSID of the wifi network which you want to send too device
+ * @param {string} bssid BSSID of the wifi network which you want to send to the device
+ * @param {string} password Wifi Password
+ * @param {boolean} how to send data(broadcast or multicast). send true for broadcasting false otherwise
+ * @param {number} maxDevices Maximum number of devices you want to be configured
+ * @param {string} encKey Encryption key for AES128 encryption
+ * @param {function} successCallback Callback on success
+ * @param {function} errorCallback  Callback on error
+ */
+espTouchSmartConfig.start(ssid,password,bssid,broadcast,maxDevices,encKey, (res)=>{
+	// SuccessCallback
+	// res is a Json String 
+	//	res = [
+	//		{
+	//			"id": "1",	// Index of device in all configured devices.
+	//			"bssid": "809010203040", // Bssid if device - usually mac address of the device
+	//			"ip": "192.168.0.10" // Obtained ip by the device. 
+	//		}
+	//	]
+	console.log(res); 
+}, (err)=>{
+	// Errorcallback
+	console.log(err);
+});
+
+// Notes
+// maxDevices: It will not guarentee the maxium number of devices picking up the config. But it'll stop as soon as confirmation is received from these many devices. 
+// encKey: Keep it's value "" (Empty String) if you are not using encryption 
 
 
-	espSmartconfig.startConfig(apSsid,apBssid,apPassword,isSsidHiddenStr,taskResultCountStr, function(res) {
-	  alert(res);
-	},function(error){
-	  console.log(error);
-	});
-```
-
-2. espSmartconfig.stopConfig
-
-
-```
-	espSmartconfig.stopConfig(function(res) {
-		console.log(res);
-	}, function(error) {
-		console.log(error);
-	});
-```
-3. espSmartconfig.getNetworklist([options], listHandler, fail);
-
-Retrieves a list of the available networks as an array of objects and passes them to the function listHandler. The format of the array is:
-
-```
-networks = [
-    {   "level": signal_level, // raw RSSI value
-        "SSID": ssid, // SSID as string, with escaped double quotes: "\"ssid name\""
-        "BSSID": bssid // MAC address of WiFi router as string
-        "frequency": frequency of the access point channel in MHz
-        "capabilities": capabilities // Describes the authentication, key management, and encryption schemes supported by the access point.
-    }
-]
-```
-Example usage:
-
-```
-	espSmartconfig.getNetworklist({numLevels: false}, $scope.listHandler, $scope.fail);
-
-
-	$scope.listHandler = function(ssids) {
-		console.log(ssids.SSID);
-		console.log(ssids.BSSID);
-	};
-
-	$scope.fail = function(e) {
-		console.log(e);
-	};
+To stop smart config
+espTouchSmartConfig.stop((res)=>{
+	// Successcallback
+}, (err)=>{
+	// Errorcallback
+});
 
 
 ```
-An options object may be passed. Currently, the only supported option is numLevels, and it has the following behavior:
 
-if (n == true || n < 2), *.getNetworklist({numLevels: n}) will return data as before, split in 5 levels;
-if (n > 1), *.getNetworklist({numLevels: n}) will calculate the signal level, split in n levels;
-if (n == false), *.getNetworklist({numLevels: n}) will use the raw signal level;
 
-#Warning 
+# Android Permissions
+This plugin requires permission for location access in Android. 
 
-You must call "espSmartconfig.stopConfig" when you want to stop the config,if not "espSmartconfig.startConfig" won't work if called next time.
+# Todo
+- [ ] Ios has not been tested yet. 
