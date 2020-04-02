@@ -39,7 +39,7 @@ public class EsptouchTask implements IEsptouchTask {
         this(apSsid, apBssid, apPassword, null, context);
     }
 
-    private EsptouchTask(String apSsid, String apBssid, String apPassword, ITouchEncryptor encryptor, Context context) {
+    public EsptouchTask(String apSsid, String apBssid, String apPassword, ITouchEncryptor encryptor, Context context) {
         if (TextUtils.isEmpty(apSsid)) {
             throw new NullPointerException("SSID can't be empty");
         }

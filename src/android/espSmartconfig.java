@@ -1,39 +1,30 @@
 package com.iocare.smartconfig;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
+
 import java.util.List;
 
 import com.espressif.iot.esptouch.EsptouchTask;
 import com.espressif.iot.esptouch.IEsptouchListener;
 import com.espressif.iot.esptouch.IEsptouchResult;
 import com.espressif.iot.esptouch.IEsptouchTask;
-import com.espressif.iot.esptouch.task.__IEsptouchTask;
+import com.espressif.iot.esptouch.security.TouchAES;
 
 //import org.apache.cordova.CallbackContext;
 //import org.apache.cordova.CordovaPlugin;
 //import org.apache.cordova.PluginResult;
 import org.apache.cordova.*;
 
-import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiEnterpriseConfig;
 import android.net.wifi.ScanResult;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.SupplicantState;
 import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class espSmartconfig extends CordovaPlugin {
   private static final String REQUEST_FINE_LOCATION = "requestFineLocation";
@@ -85,20 +76,29 @@ public class espSmartconfig extends CordovaPlugin {
     final String apSsid = args.getString(0);
     final String apBssid = args.getString(1);
     final String apPassword = args.getString(2);
-    final String isSsidHiddenStr = args.getString(3);
+    final String broadcast = args.getString(3);
     final String taskResultCountStr = args.getString(4);
+    final String encryptionKey = args.getString(5);
     final int taskResultCount = Integer.parseInt(taskResultCountStr);
     final Object mLock = new Object();
+    final boolean useEncryption = encryptionKey.length()> 0;
+
+
     cordova.getThreadPool().execute(new Runnable() {
                                       public void run() {
                                         synchronized (mLock) {
-                                          boolean isSsidHidden = false;
-                                          if (isSsidHiddenStr.equals("YES")) {
-                                            isSsidHidden = true;
-                                          }
+                                          byte[] encKey;
                                           cancelEspTouchTask();
-                                          mEsptouchTask = new EsptouchTask(apSsid, apBssid, apPassword, cordova.getActivity());
+                                          if(useEncryption){
+                                            encKey =  encryptionKey.getBytes();
+                                            TouchAES encryptor = new TouchAES(encKey);
+                                            mEsptouchTask = new EsptouchTask(apSsid, apBssid, apPassword, encryptor, cordova.getActivity());
+                                          }else{
+                                            mEsptouchTask = new EsptouchTask(apSsid, apBssid, apPassword, cordova.getActivity());
+                                          }
+                                          mEsptouchTask.setPackageBroadcast(Integer.parseInt(broadcast) == 1);
                                           mEsptouchTask.setEsptouchListener(myListener);
+
                                         }
                                         List<IEsptouchResult> resultList = mEsptouchTask.executeForResults(taskResultCount);
                                         IEsptouchResult firstResult = resultList.get(0);
