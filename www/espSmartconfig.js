@@ -2,8 +2,8 @@ var exec = require('cordova/exec'),
 cordova = require('cordova');
 
 module.exports = {
-	startConfig:function(apSsid,apBssid,apPassword,isSsidHiddenStr,taskResultCountStr,successCallback, errorCallback){
-		exec(successCallback, errorCallback, "espSmartconfig", "startConfig", [apSsid,apBssid,apPassword,isSsidHiddenStr,taskResultCountStr]);
+	startConfig:function(apSsid,apBssid,apPassword,broadcast,taskResultCountStr,encKey, successCallback, errorCallback){
+		exec(successCallback, errorCallback, "espSmartconfig", "startConfig", [apSsid,apBssid,apPassword,broadcast,encKey, taskResultCountStr]);
 	},
 	
 	stopConfig:function(successCallback, errorCallback){
