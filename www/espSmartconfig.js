@@ -9,6 +9,7 @@ module.exports = {
 	stopConfig:function(successCallback, errorCallback){
 		exec(successCallback, errorCallback, "espSmartconfig", "stopConfig", []);
 	},
+    /* 
     getNetworklist: function(options, win, fail) {
         if (typeof options === 'function') {
             fail = win;
@@ -22,7 +23,8 @@ module.exports = {
         }
 
         cordova.exec(win, fail, 'espSmartconfig', 'getNetworklist', [options]);
-    }
+    } 
+    */
 
 
 }

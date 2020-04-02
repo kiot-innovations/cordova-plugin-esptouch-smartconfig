@@ -54,12 +54,11 @@ public class espSmartconfig extends CordovaPlugin {
       return this.startSmartConfig(callbackContext, args);
     } else if (action.equals("stopConfig")) {
       return this.stopSmartConfig(callbackContext);
-    } else if (action.equals("getNetworklist")) {
-      return this.getNetworklist(callbackContext, args);
     } else if (action.equals(REQUEST_FINE_LOCATION)) {
       this.requestLocationPermission(LOCATION_REQUEST_CODE);
       return true;
-    } else {
+    }
+    else {
       callbackContext.error("can not find the function " + action);
       return false;
     }
@@ -156,103 +155,6 @@ public class espSmartconfig extends CordovaPlugin {
     PluginResult result = new PluginResult(status, message);
     result.setKeepCallback(true); // keep callback after this call
     receivingCallbackContext.sendPluginResult(result);
-  }
-
-  /**
-   * Code cobtained from WiFiWizard by hoerresb This method uses the
-   * callbackContext.success method to send a JSONArray of the scanned networks.
-   *
-   * @param callbackContext A Cordova callback context
-   * @param data            JSONArray with [0] == JSONObject
-   * @return true
-   */
-  private boolean getNetworklist(CallbackContext callbackContext, JSONArray data) {
-    List<ScanResult> scanResults = wifiManager.getScanResults();
-
-    JSONArray returnList = new JSONArray();
-
-    Integer numLevels = null;
-
-    if (!validateData(data)) {
-      callbackContext.error("espSmartconfig: disconnectNetwork invalid data");
-      Log.d(TAG, "espSmartconfig: disconnectNetwork invalid data");
-      return false;
-    } else if (!data.isNull(0)) {
-      try {
-        JSONObject options = data.getJSONObject(0);
-
-        if (options.has("numLevels")) {
-          Integer levels = options.optInt("numLevels");
-
-          if (levels > 0) {
-            numLevels = levels;
-          } else if (options.optBoolean("numLevels", false)) {
-            // use previous default for {numLevels: true}
-            numLevels = 5;
-          }
-        }
-      } catch (JSONException e) {
-        e.printStackTrace();
-        callbackContext.error(e.toString());
-        return false;
-      }
-    }
-
-    for (ScanResult scan : scanResults) {
-      /*
-       * @todo - breaking change, remove this notice when tidying new release and
-       * explain changes, e.g.: 0.y.z includes a breaking change to
-       * espSmartconfig.getNetworklist(). Earlier versions set scans' level attributes
-       * to a number derived from wifiManager.calculateSignalLevel. This update
-       * returns scans' raw RSSI value as the level, per Android spec / APIs. If your
-       * application depends on the previous behaviour, we have added an options
-       * object that will modify behaviour: - if `(n == true || n < 2)`,
-       * `*.getNetworklist({numLevels: n})` will return data as before, split in 5
-       * levels; - if `(n > 1)`, `*.getNetworklist({numLevels: n})` will calculate the
-       * signal level, split in n levels; - if `(n == false)`,
-       * `*.getNetworklist({numLevels: n})` will use the raw signal level;
-       */
-
-      int level;
-
-      if (numLevels == null) {
-        level = scan.level;
-      } else {
-        level = wifiManager.calculateSignalLevel(scan.level, numLevels);
-      }
-
-      JSONObject lvl = new JSONObject();
-      try {
-        lvl.put("level", level);
-        lvl.put("SSID", scan.SSID);
-        lvl.put("BSSID", scan.BSSID);
-        lvl.put("frequency", scan.frequency);
-        lvl.put("capabilities", scan.capabilities);
-        // lvl.put("timestamp", scan.timestamp);
-        returnList.put(lvl);
-      } catch (JSONException e) {
-        e.printStackTrace();
-        callbackContext.error(e.toString());
-        return false;
-      }
-    }
-
-    callbackContext.success(returnList);
-    return true;
-  }
-
-  // Code cobtained from WiFiWizard by hoerresb
-  private boolean validateData(JSONArray data) {
-    try {
-      if (data == null || data.get(0) == null) {
-        receivingCallbackContext.error("Data is null.");
-        return false;
-      }
-      return true;
-    } catch (Exception e) {
-      receivingCallbackContext.error(e.getMessage());
-    }
-    return false;
   }
 
   private boolean isSDKAtLeastP() {
