@@ -27,7 +27,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class espSmartconfig extends CordovaPlugin {
-  private static final String REQUEST_FINE_LOCATION = "requestFineLocation";
+  private static final String ACTION_REQUEST_LOCATION_PERMISSION = "requestLocationPermission";
+  private static final String ACTION_STOP_CONFIG = "stopConfig";
+  private static final String ACTION_START_CONFIG = "startConfig";
   private static final String ACCESS_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
   private static final String ACCESS_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
   private static final int LOCATION_REQUEST_CODE = 1;
@@ -50,11 +52,11 @@ public class espSmartconfig extends CordovaPlugin {
     throws JSONException {
     receivingCallbackContext = callbackContext; // modified by lianghuiyuan
     this.receivedArgs = args;
-    if (action.equals("startConfig")) {
+    if (action.equals(ACTION_START_CONFIG)) {
       return this.startSmartConfig(callbackContext, args);
-    } else if (action.equals("stopConfig")) {
+    } else if (action.equals(ACTION_STOP_CONFIG)) {
       return this.stopSmartConfig(callbackContext);
-    } else if (action.equals(REQUEST_FINE_LOCATION)) {
+    } else if (action.equals(ACTION_REQUEST_LOCATION_PERMISSION)) {
       this.requestLocationPermission(LOCATION_REQUEST_CODE);
       return true;
     }
@@ -195,6 +197,7 @@ public class espSmartconfig extends CordovaPlugin {
   }
 
   // listener to get result
+  // Not useful. Not doing anything. 
   private IEsptouchListener myListener = new IEsptouchListener() {
     @Override
     public void onEsptouchResultAdded(final IEsptouchResult result) {

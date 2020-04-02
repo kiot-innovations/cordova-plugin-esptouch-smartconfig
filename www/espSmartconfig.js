@@ -5,10 +5,13 @@ module.exports = {
 	startConfig:function(apSsid,apBssid,apPassword,broadcast,taskResultCountStr,encKey, successCallback, errorCallback){
 		exec(successCallback, errorCallback, "espSmartconfig", "startConfig", [apSsid,apBssid,apPassword,broadcast, taskResultCountStr, encKey]);
 	},
-	
 	stopConfig:function(successCallback, errorCallback){
 		exec(successCallback, errorCallback, "espSmartconfig", "stopConfig", []);
-	},
+    },
+    requestLocationPermission: function(successCallback, errorCallback){
+        exec(successCallback, errorCallback, "espSmartconfig", "requestLocationPermission", []);
+    }
+    
     /* 
     getNetworklist: function(options, win, fail) {
         if (typeof options === 'function') {
