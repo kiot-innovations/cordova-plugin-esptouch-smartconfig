@@ -3,7 +3,7 @@ A cordova plugin for sending wifi configurations to esp8266 and esp32 based devi
 
 # Install
 
-`cordova plugin add https://github.com/kiot-innovations/cordova-plugin-esptouch-smartconfig`
+`cordova plugin add cordova-plugin-esptouch-smartconfig`
 
 ### Use in Ionic project
 Ionic (typescript) project will throw error because espTouchSmartConfig is not defined. To prevent this declare espTouchSmartConfig in app.ts or any other module where you are using it.
