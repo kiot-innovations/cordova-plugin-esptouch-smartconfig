@@ -52,7 +52,7 @@ espTouchSmartConfig.start(ssid,password,bssid,broadcast,maxDevices,encKey, (res)
 // Notes
 // maxDevices: It will not guarentee the maxium number of devices picking up the config. But it'll stop as soon as confirmation is received from these many devices. 
 // encKey: Keep it's value "" (Empty String) if you are not using encryption 
-
+// This function will automatically check permission for location and ask for permission if not granted. 
 
 To stop smart config
 espTouchSmartConfig.stop((res)=>{
@@ -60,6 +60,15 @@ espTouchSmartConfig.stop((res)=>{
 }, (err)=>{
 	// Errorcallback
 });
+
+To request location permission
+espTouchSmartConfig.requestLocationPermission(()=>{
+	// Permission granted. 
+}, (err)=>{
+	// Boo!! Permission not granted.
+	console.log(err); 
+});
+
 
 
 ```
