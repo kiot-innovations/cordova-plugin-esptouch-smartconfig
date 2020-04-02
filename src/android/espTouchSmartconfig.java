@@ -1,4 +1,4 @@
-package com.iocare.smartconfig;
+package io.kiot.smartconfig;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -26,7 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class espSmartconfig extends CordovaPlugin {
+public class espTouchSmartconfig extends CordovaPlugin {
   private static final String ACTION_REQUEST_LOCATION_PERMISSION = "requestLocationPermission";
   private static final String ACTION_STOP_CONFIG = "stopConfig";
   private static final String ACTION_START_CONFIG = "startConfig";
@@ -39,7 +39,7 @@ public class espSmartconfig extends CordovaPlugin {
   CallbackContext receivingCallbackContext = null;
   JSONArray receivedArgs;
   IEsptouchTask mEsptouchTask = null;
-  private static final String TAG = "espSmartconfig";
+  private static final String TAG = "espTouchSmartconfig";
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {

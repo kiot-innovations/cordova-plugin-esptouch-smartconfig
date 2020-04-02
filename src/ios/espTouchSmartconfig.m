@@ -1,4 +1,4 @@
-#import "espSmartconfig.h"
+#import "espTouchSmartconfig.h"
 
 @interface EspTouchDelegateImpl : NSObject<ESPTouchDelegate>
 @property (nonatomic, strong) CDVInvokedUrlCommand *command;
@@ -20,7 +20,7 @@
 @end
 
 
-@implementation espSmartconfig
+@implementation espTouchSmartconfig
 
 - (void) startConfig:(CDVInvokedUrlCommand *)command{
     [self.commandDelegate runInBackground:^{

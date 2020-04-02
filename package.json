@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-smartconfig",
-  "version": "1.0.4",
-  "description": "Cordova Cordova Smart Config plugin for esp8266 and ESP32",
+  "name": "cordova-plugin-esptouch-smartconfig",
+  "version": "1.0.0",
+  "description": "Cordova plugin for Esptouch Smart config for esp8266 and ESP32 chips",
   "cordova": {
-    "id": "com.iocare.smartconfig",
+    "id": "io.kiot.smartconfig",
     "platforms": [
       "android",
       "ios"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/IOCare/cordova-plugin-smartconfig.git"
+    "url": "git+https://github.com/kiot-innovations/cordova-plugin-esptouch-smartconfig.git"
   },
   "keywords": [
     "phonegap",
@@ -19,20 +19,23 @@
     "wifi",
     "esptouch",
     "smartconfig",
+    "esp8266",
+    "esp32",
     "ecosystem:cordova",
     "cordova-android",
     "cordova-ios"
   ],
-  "engines": [
-    {
-      "name": "cordova",
-      "version": ">=3.4.0"
+  "engines": {
+    "cordovaDependencies": {
+      "3.0.0": {
+        "cordova-android": ">=5.0.0"
+      }
     }
-  ],
-  "author": "Rajendra Khope",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/IOCare/cordova-plugin-smartconfig/issues"
   },
-  "homepage": "https://github.com/IOCare/cordova-plugin-smartconfig#readme"
+  "author": "Kiot Innovations",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/kiot-innovations/cordova-plugin-esptouch-smartconfig/issues"
+  },
+  "homepage": "https://github.com/kiot-innovations/cordova-plugin-esptouch-smartconfig"
 }

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-           id="cordova-plugin-smartconfig"
-      version="1.0.4">
-    <name>Cordova Smart Config</name>
-    <description>Cordova Cordova Smart Config plugin for esp8266 and ESP32</description>
+           id="cordova-plugin-esptouch-smartconfig"
+      version="1.0.0">
+    <name>Cordova Esptouch Smart Config</name>
+    <description>Cordova plugin for Esptouch Smart config for esp8266 and ESP32 chips</description>
     <license>Apache 2.0</license>
-    <keywords>cordova,console</keywords>
-    <repo>https://github.com/IOCare/cordova-plugin-smartconfig.git</repo>
-    <issue>https://github.com/IOCare/cordova-plugin-smartconfig/issues</issue>
+    <keywords>cordova, Esptouch, Esp8266, ESP32, Smart Config, Kiot Innovations, Kiot</keywords>
+    <repo>https://github.com/kiot-innovations/cordova-plugin-esptouch-smartconfig.git</repo>
+    <issue>https://github.com/kiot-innovations/cordova-plugin-esptouch-smartconfig/issues</issue>
 
-    <js-module name="espSmartconfig" src="www/espSmartconfig.js">
-        <clobbers target="espSmartconfig"/>
+    <js-module name="espTouchSmartconfig" src="www/espTouchSmartconfig.js">
+        <clobbers target="espTouchSmartconfig"/>
     </js-module>
 <!-- 	android platform -->
     <platform name="android">
@@ -24,24 +24,24 @@
 			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 		</config-file>
         <config-file parent="/*" target="res/xml/config.xml">
-            <feature name="espSmartconfig">
-                <param name="android-package" value="com.iocare.smartconfig.espSmartconfig"/>
+            <feature name="espTouchSmartconfig">
+                <param name="android-package" value="io.kiot.smartconfig.espTouchSmartconfig"/>
 				<param name="onload" value="true" />
             </feature>
         </config-file>
-		<source-file src="src/android/espSmartconfig.java" target-dir="src/com/iocare/smartconfig/" />
+		<source-file src="src/android/espTouchSmartconfig.java" target-dir="src/io/kiot/smartconfig/" />
         <!-- <source-file src="src/android/esptouch.jar" target-dir="libs/" /> -->
         <source-file src="src/android/com/espressif" target-dir="app/src/main/java/com"/>
     </platform>
 <!-- 	ios platform -->
 	<platform name="ios">
 		<config-file target="config.xml" parent="/*">
-			<feature name="espSmartconfig">
-			 <param name="ios-package" value="espSmartconfig"/>
+			<feature name="espTouchSmartconfig">
+			 <param name="ios-package" value="espTouchSmartconfig"/>
 		   </feature>
 	   </config-file>
-	   <header-file src="src/ios/espSmartconfig.h"/>
-       <source-file src="src/ios/espSmartconfig.m"/>
+	   <header-file src="src/ios/espTouchSmartconfig.h"/>
+       <source-file src="src/ios/espTouchSmartconfig.m"/>
 	   
 	   <framework src="CoreGraphics.framework" />
 	   <framework src="UIKit.framework" />

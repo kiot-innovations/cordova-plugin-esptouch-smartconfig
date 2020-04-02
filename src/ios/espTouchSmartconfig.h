@@ -7,7 +7,7 @@
 
 
 
-@interface espSmartconfig : CDVPlugin
+@interface espTouchSmartconfig : CDVPlugin
 @property (nonatomic, strong) NSCondition *_condition;
 @property (atomic, strong) ESPTouchTask *_esptouchTask;
 
