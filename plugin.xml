@@ -46,7 +46,9 @@
 	   <framework src="CoreGraphics.framework" />
 	   <framework src="UIKit.framework" />
 	   <framework src="Foundation.framework" />
-	   <podspec>
+	   <framework src="EspressifTouchSDK" type="podspec" spec="1.0.3"/>
+		
+      <podspec>
       <config>
         <source url="https://github.com/brightcove/BrightcoveSpecs.git" />
         <source url="https://github.com/CocoaPods/Specs.git"/>
