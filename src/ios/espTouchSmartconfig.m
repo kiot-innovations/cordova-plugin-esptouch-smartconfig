@@ -25,17 +25,28 @@
 - (void) startConfig:(CDVInvokedUrlCommand *)command{
     [self.commandDelegate runInBackground:^{
         dispatch_queue_t  queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        [self._condition lock];
+        if (self._esptouchTask != nil)
+        {
+            [self._esptouchTask interrupt];
+        }
+        [self._condition unlock];
         
         [self._condition lock];
         NSString *apSsid = (NSString *)[command.arguments objectAtIndex:0];
         NSString *apBssid = (NSString *)[command.arguments objectAtIndex:1];
         NSString *apPwd = (NSString *)[command.arguments objectAtIndex:2];
-        NSString *isSsidHiddenStr=(NSString *)[command.arguments objectAtIndex:3];
-        
-        BOOL isSsidHidden = true;
-        if([isSsidHiddenStr compare:@"NO"]==NSOrderedSame){
-            isSsidHidden=false;
+        BOOL broadcast=[[command.arguments objectAtIndex:3] boolValue];
+        NSString *encryptionKey=(NSString *)[command.arguments objectAtIndex:5];
+        BOOL useEncryption = false;
+//        BOOL broadcast = false;
+        if (encryptionKey.length > 0){
+            useEncryption = true;
         }
+//        if([broadcastStr isEqualToString:@"1"]){
+//            broadcast = true;
+//        }
+        
         int taskCount = [[command.arguments objectAtIndex:4] intValue];
         
         NSLog(@"ssid: %@, bssid: %@, apPwd: %@", apSsid, apBssid, apPwd);
@@ -47,6 +58,7 @@
         esptouchDelegate.command=command;
         esptouchDelegate.commandDelegate=self.commandDelegate;
         [self._esptouchTask setEsptouchDelegate:esptouchDelegate];
+//        [self._esptouchTask setPackageBroadcast:broadcast];
         [self._condition unlock];
         NSArray * esptouchResultArray = [self._esptouchTask executeForResults:taskCount];
         
@@ -59,13 +71,36 @@
                 // check whether the task is cancelled and no results received
                 if (!firstResult.isCancelled)
                 {
-                    //NSMutableString *mutableStr = [[NSMutableString alloc]init];
-                    //NSUInteger count = 0;
+                    //NSMuta+bleString *mutableStr = [[NSMutableString alloc]init];
+                    NSInteger count = 0;
                     // max results to be displayed, if it is more than maxDisplayCount,
                     // just show the count of redundant ones
-                    //const int maxDisplayCount = 5;
+                    const int maxDisplayCount = taskCount;
                     if ([firstResult isSuc])
                     {
+                        NSMutableArray *tempArray = [[NSMutableArray alloc] initWithCapacity:maxDisplayCount];
+                        for (int i = 0; i < [esptouchResultArray count]; ++i){
+                            ESPTouchResult *resultInArray = [esptouchResultArray objectAtIndex:i];
+                            NSString *ipaddr = [ESP_NetUtil descriptionInetAddr4ByData:resultInArray.ipAddrData];
+                            NSString *bssid = resultInArray.bssid;
+                            
+                            NSDictionary *resultObject = [NSDictionary dictionaryWithObjectsAndKeys:
+                            [NSNumber numberWithLong:count], @"id",
+                            bssid, @"bssid",
+                            ipaddr, @"ip",
+                            nil];
+                            [tempArray addObject:resultObject];
+                            count++;
+                            if( count >= maxDisplayCount){
+                                break;
+                            }
+                        }
+                        NSError* error;
+                        NSArray *resultsArray = [NSArray arrayWithArray:tempArray];
+                        
+                        NSDate *resultData = [NSJSONSerialization dataWithJSONObject:resultsArray options:NSJSONWritingPrettyPrinted error:&error];
+                        
+                        NSString *result = [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
                         
                         //                    for (int i = 0; i < [esptouchResultArray count]; ++i)
                         //                    {
@@ -84,14 +119,14 @@
                         //                        [mutableStr appendString:[NSString stringWithFormat:@"\nthere's %lu more result(s) without showing\n",(unsigned long)([esptouchResultArray count] - count)]];
                         //                    }
                         
-                        ESPTouchResult *resultInArray = [esptouchResultArray objectAtIndex:0];
-                        NSString *ipaddr = [ESP_NetUtil descriptionInetAddr4ByData:resultInArray.ipAddrData];
+//                        ESPTouchResult *resultInArray = [esptouchResultArray objectAtIndex:0];
+//                        NSString *ipaddr = [ESP_NetUtil descriptionInetAddr4ByData:resultInArray.ipAddrData];
                         // device0 I think is suppose to be the index
-                        NSString *result = [NSString stringWithFormat:@"Finished: device0,bssid=%@,InetAddress=%@.", resultInArray.bssid, ipaddr];
+//                        NSString *result = [NSString stringWithFormat:@"Finished: device0,bssid=%@,InetAddress=%@.", resultInArray.bssid, ipaddr];
                         
                         //                        NSDictionary* returnObj = @{@"ipaddr": ipaddr};
                         CDVPluginResult* pluginResult = nil;
-                        //                        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+                        //                        pluginResult = [CDVPluginResult resul	tWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
                         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:result];
                         
                         [pluginResult setKeepCallbackAsBool:true];
