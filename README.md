@@ -21,7 +21,7 @@ declare var espTouchSmartConfig: any;
 # Usage
 
 ### To start smart config
-```
+```Javascript
 
 /**
  * 
@@ -34,7 +34,7 @@ declare var espTouchSmartConfig: any;
  * @param {function} successCallback Callback on success
  * @param {function} errorCallback  Callback on error
  */
-espTouchSmartConfig.start(ssid,password,bssid,broadcast,maxDevices,encKey, (res)=>{
+espTouchSmartConfig.start(ssid,bssid,password,broadcast,maxDevices,encKey, (res)=>{
 	// SuccessCallback
 	// res is a Json String 
 	//	res = [
