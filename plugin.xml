@@ -46,6 +46,16 @@
 	   <framework src="CoreGraphics.framework" />
 	   <framework src="UIKit.framework" />
 	   <framework src="Foundation.framework" />
-	   <framework src="src/ios/Esptouch.framework" custom="true" framework="true"/>
+	   <framework src="EspTouch" type="podspec" spec="5.3.2"/>
+		
+      <podspec>
+      <config>
+        <source url="https://github.com/brightcove/BrightcoveSpecs.git" />
+        <source url="https://github.com/CocoaPods/Specs.git"/>
+      </config>
+      <pods use-frameworks="true">
+        <pod name="EspTouch" spec="~> 5.3.2" />
+      </pods>
+    </podspec>
 	</platform>
 </plugin>

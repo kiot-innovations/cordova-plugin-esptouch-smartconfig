@@ -1,6 +1,0 @@
-framework module Esptouch {
-  umbrella header "Esptouch.h"
-
-  export *
-  module * { export * }
-}
